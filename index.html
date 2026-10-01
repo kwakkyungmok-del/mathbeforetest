@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>중2 도형 마스터</title>
+<style>
+:root{--bg:#f7f8fc;--card:#fff;--tx:#1f2430;--sub:#667;--pri:#4f6df5;--ok:#1f9d63;--no:#d6403f;--bd:#e3e6f0;--hl:#eef1ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161d;--card:#1e222c;--tx:#eceef5;--sub:#9aa1b5;--pri:#7f95ff;--ok:#43c188;--no:#ff6b6a;--bd:#323848;--hl:#262c44}}
+:root[data-theme="dark"]{--bg:#14161d;--card:#1e222c;--tx:#eceef5;--sub:#9aa1b5;--pri:#7f95ff;--ok:#43c188;--no:#ff6b6a;--bd:#323848;--hl:#262c44}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.7 -apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:8px 0 2px}h2{font-size:18px;margin:0 0 8px}p{margin:6px 0}.sub{color:var(--sub);font-size:14px}
+nav{display:flex;gap:8px;margin:14px 0;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:6px 0;z-index:2}
+button{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:8px 14px}
+button.on,button.pri{background:var(--pri);color:#fff;border-color:var(--pri)}
+nav button{flex:1}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;margin:12px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.box{background:var(--hl);border-left:4px solid var(--pri);padding:8px 12px;border-radius:8px;margin:8px 0}
+li{margin:3px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid var(--bd);padding:6px;text-align:center}
+.opt{display:block;width:100%;text-align:left;margin:8px 0}.opt.ok{background:var(--ok);color:#fff;border-color:var(--ok)}.opt.no{background:var(--no);color:#fff;border-color:var(--no)}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri)}
+.stat{display:flex;gap:10px}.stat div{flex:1;text-align:center;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px}.stat b{font-size:20px;display:block}
+svg{max-width:100%;height:auto}svg *{stroke:var(--tx)}svg .a{stroke:var(--pri)}svg{display:block;margin:8px auto}svg text{fill:var(--tx);stroke:none;font-size:13px}
+.hide{display:none}
+</style></head><body><main>
+<h1>📐 중2 도형 마스터</h1>
+<p class="sub">이등변삼각형 · 직각삼각형의 합동 · 외심과 내심 · 사각형</p>
+<div class="stat" id="stat"></div>
+<nav><button id="t0" class="on">📖 개념 복습</button><button id="t1">✏️ 문제 풀기</button></nav>
+<section id="p0"></section>
+<section id="p1" class="hide"></section>
+</main>
+<script>
+const U=["이등변삼각형","직각삼각형의 합동","외심과 내심","사각형"];
+const C=[
+`<div class="card"><h2>이등변삼각형의 성질</h2>
+<svg viewBox="0 0 220 120" width="220"><polygon points="110,10 30,105 190,105" fill="none" stroke-width="2"/><line x1="110" y1="10" x2="110" y2="105" stroke-dasharray="4" stroke-width="1.5"/><text x="106" y="8">A</text><text x="16" y="112">B</text><text x="192" y="112">C</text><text x="106" y="118">D</text></svg>
+<p><b>정의</b> 두 변의 길이가 같은 삼각형 (같은 두 변 사이의 각 = 꼭지각, 나머지 두 각 = 밑각)</p>
+<ul><li><b>성질 1</b> 두 밑각의 크기는 같다. (AB=AC → ∠B=∠C)</li>
+<li><b>성질 2</b> 꼭지각의 이등분선은 밑변을 <b>수직이등분</b>한다. (AD⊥BC, BD=CD)</li>
+<li><b>이등변삼각형이 되는 조건</b> 두 내각의 크기가 같은 삼각형은 이등변삼각형이다. (∠B=∠C → AB=AC)</li></ul>
+<div class="box">증명 아이디어: 꼭지각의 이등분선 AD를 그으면 △ABD≡△ACD (SAS) → ∠B=∠C, BD=CD, ∠ADB=∠ADC=90°<br>꼭지각 = 180° − 2×(밑각)</div></div>`,
+`<div class="card"><h2>직각삼각형의 합동 조건</h2>
+<p>두 직각삼각형 ABC, DEF에서 ∠C=∠F=90°일 때</p><svg viewBox="0 0 300 130" width="300"><polygon points="20,15 20,110 110,110" fill="none" stroke-width="2"/><polygon points="180,15 180,110 270,110" fill="none" stroke-width="2"/><path d="M20,100h10v10M180,100h10v10" fill="none"/><line class="a" x1="60.6" y1="66.1" x2="69.4" y2="57.9" stroke-width="2.5"/><line class="a" x1="220.6" y1="66.1" x2="229.4" y2="57.9" stroke-width="2.5"/><text x="8" y="14">A</text><text x="8" y="124">C</text><text x="108" y="124">B</text><text x="168" y="14">D</text><text x="168" y="124">F</text><text x="268" y="124">E</text><text x="74" y="52">빗변</text><text x="234" y="52">빗변</text></svg>
+<table><tr><th>조건</th><th>이름</th><th>내용</th></tr><tr><td><b>RHS</b></td><td>Right-angle, Hypotenuse, Side</td><td>빗변의 길이 + 다른 한 변의 길이가 각각 같다</td></tr><tr><td><b>RHA</b></td><td>Right-angle, Hypotenuse, Angle</td><td>빗변의 길이 + 한 예각의 크기가 각각 같다</td></tr></table>
+<div class="box">⚠️ 반드시 <b>빗변</b>이 같아야 한다! 직각이 아닌 삼각형에는 쓸 수 없다.<br>(빗변 없이 변 하나와 예각 하나만 같다면 ASA — 일반 삼각형 합동 조건)</div>
+<p><b>활용 ①</b> 각의 이등분선 위의 한 점에서 두 변에 이르는 거리는 같다. (RHA)<br><b>활용 ②</b> 각의 두 변에서 같은 거리에 있는 점은 그 각의 이등분선 위에 있다. (RHS)</p></div>`,
+`<div class="card"><h2>외심 (外心)</h2>
+<ul><li><b>외접원</b>: 삼각형의 세 꼭짓점을 지나는 원, 그 중심이 <b>외심 O</b></li>
+<li><b>성질</b>: 외심은 세 변의 <b>수직이등분선</b>의 교점이고, OA=OB=OC=R(외접원의 반지름)</li>
+<li><b>위치</b>: 예각삼각형 → 내부 / 직각삼각형 → <b>빗변의 중점</b> / 둔각삼각형 → 외부</li>
+<li>∠BOC = 2∠A (중심각 = 2×원주각)</li></ul>
+<svg viewBox="0 0 220 145" width="220"><circle class="a" cx="110" cy="75" r="60" fill="none" stroke-width="1.5"/><polygon points="110,15 58,105 156,114" fill="none" stroke-width="2"/><path d="M110,75L110,15M110,75L58,105M110,75L156,114" stroke-dasharray="4" fill="none"/><circle cx="110" cy="75" r="2.5"/><text x="106" y="10">A</text><text x="44" y="114">B</text><text x="160" y="124">C</text><text x="116" y="72">O</text><text x="62" y="140">OA = OB = OC (외접원)</text></svg><div class="box"><b>작도</b> ① 두 변(예: AB, BC)의 수직이등분선을 각각 작도 ② 두 선의 교점이 외심 O ③ O를 중심, OA를 반지름으로 외접원 작도</div></div>
+<div class="card"><h2>내심 (內心)</h2>
+<ul><li><b>내접원</b>: 삼각형의 세 변에 접하는 원, 그 중심이 <b>내심 I</b></li>
+<li><b>성질</b>: 내심은 세 내각의 <b>이등분선</b>의 교점이고, 세 변까지의 거리가 같다 (= 내접원의 반지름 r)</li>
+<li><b>위치</b>: 항상 삼각형의 <b>내부</b></li>
+<li>∠BIC = 90° + ½∠A</li>
+<li>삼각형의 넓이 S = ½ r (a+b+c)</li>
+<li>직각삼각형(빗변 c): r = (a+b−c)/2</li></ul>
+<svg viewBox="0 0 230 140" width="230"><polygon points="110,15 30,115 200,115" fill="none" stroke-width="2"/><circle class="a" cx="112" cy="76" r="39" fill="none" stroke-width="1.5"/><path d="M112,76L110,15M112,76L30,115M112,76L200,115" stroke-dasharray="4" fill="none"/><line class="a" x1="112" y1="76" x2="112" y2="115" stroke-width="2.5"/><circle cx="112" cy="76" r="2.5"/><text x="106" y="10">A</text><text x="14" y="126">B</text><text x="202" y="126">C</text><text x="118" y="72">I</text><text x="116" y="100">r</text><text x="60" y="138">내접원: 변까지 거리 = r</text></svg><div class="box"><b>작도</b> ① 두 내각(예: ∠A, ∠B)의 이등분선 작도 ② 교점이 내심 I ③ I에서 한 변에 수선을 내려 발을 구함 ④ 그 길이를 반지름으로 내접원 작도</div>
+<table><tr><th></th><th>외심</th><th>내심</th></tr><tr><td>교점</td><td>수직이등분선</td><td>내각의 이등분선</td></tr><tr><td>같은 것</td><td>꼭짓점까지 거리</td><td>변까지 거리</td></tr><tr><td>위치</td><td>삼각형 종류에 따라 다름</td><td>항상 내부</td></tr></table>
+<p class="sub">정삼각형은 외심과 내심이 일치합니다.</p></div>`,
+`<div class="card"><h2>평행사변형</h2>
+<p><b>정의</b> 두 쌍의 대변이 각각 평행한 사각형</p><svg viewBox="0 0 220 120" width="220"><polygon points="50,20 200,20 160,100 10,100" fill="none" stroke-width="2"/><path class="a" d="M50,20L160,100M200,20L10,100" fill="none" stroke-width="1.5"/><circle cx="105" cy="60" r="2.5"/><text x="40" y="14">A</text><text x="202" y="14">B</text><text x="162" y="114">C</text><text x="0" y="114">D</text><text x="110" y="54">O</text></svg><p class="sub" style="text-align:center">AO=CO, BO=DO (대각선은 서로 이등분)</p>
+<p><b>성질</b></p><ul><li>두 쌍의 대변의 길이가 각각 같다</li><li>두 쌍의 대각의 크기가 각각 같다 (이웃한 두 각의 합 = 180°)</li><li>두 대각선은 서로 다른 것을 이등분한다</li></ul>
+<p><b>평행사변형이 되는 조건</b></p><ol><li>두 쌍의 대변이 각각 평행</li><li>두 쌍의 대변의 길이가 각각 같음</li><li>두 쌍의 대각의 크기가 각각 같음</li><li>두 대각선이 서로 다른 것을 이등분</li><li>한 쌍의 대변이 평행하고 길이가 같음</li></ol></div>
+<div class="card"><h2>여러 가지 사각형</h2>
+<table><tr><th>사각형</th><th>정의 / 특징</th></tr>
+<tr><td>등변사다리꼴</td><td>밑변의 양 끝각이 같은 사다리꼴. 평행하지 않은 두 변(다리)의 길이가 같고, 두 대각선의 길이가 같다</td></tr>
+<tr><td>직사각형</td><td>네 각이 모두 직각. 평행사변형 + <b>두 대각선의 길이가 같다</b></td></tr>
+<tr><td>마름모</td><td>네 변의 길이가 모두 같다. 평행사변형 + <b>두 대각선이 서로 수직</b></td></tr>
+<tr><td>정사각형</td><td>네 변의 길이가 같고 네 각이 모두 직각. 대각선은 길이가 같고 서로 수직이등분</td></tr></table>
+<svg viewBox="0 0 340 306" width="340"><path d="M170,56V66M170,118L85,128M170,118L255,128M85,180L45,190M85,180L125,190M45,242L85,252M125,242L85,252" fill="none"/><polygon points="140,34 148,8 200,14 188,38" fill="none" stroke-width="2"/><text x="170" y="52" text-anchor="middle" style="font-size:12px">사각형</text><polygon points="166,70 196,70 202,100 140,100" fill="none" stroke-width="2"/><text x="170" y="114" text-anchor="middle" style="font-size:12px">사다리꼴</text><polygon points="67,132 117,132 103,162 53,162" fill="none" stroke-width="2"/><text x="85" y="176" text-anchor="middle" style="font-size:12px">평행사변형</text><polygon points="239,132 271,132 285,162 225,162" fill="none" stroke-width="2"/><text x="255" y="176" text-anchor="middle" style="font-size:12px">등변사다리꼴</text><polygon points="15,196 75,196 75,222 15,222" fill="none" stroke-width="2"/><text x="45" y="238" text-anchor="middle" style="font-size:12px">직사각형</text><polygon points="125,190 155,207 125,224 95,207" fill="none" stroke-width="2"/><text x="125" y="238" text-anchor="middle" style="font-size:12px">마름모</text><polygon class="a" points="68,252 102,252 102,286 68,286" fill="none" stroke-width="2"/><text x="85" y="300" text-anchor="middle" style="font-size:12px">정사각형</text></svg><p class="sub" style="text-align:center">위 → 아래로 갈수록 조건이 더 많은 (특수한) 사각형</p><div class="box"><b>관계</b> 정사각형 ⊂ 직사각형·마름모 ⊂ 평행사변형 ⊂ 사다리꼴 ⊂ 사각형<br>
+평행사변형 + 한 내각이 90° (또는 대각선 길이 같음) → 직사각형<br>평행사변형 + 이웃한 두 변 길이 같음 (또는 대각선 수직) → 마름모<br>직사각형 + 마름모 조건 (또는 마름모 + 직사각형 조건) → 정사각형</div></div>`];
+const Q=[
+[0,"AB=AC인 이등변삼각형에서 ∠A=40°일 때, ∠B의 크기는?",["40°","70°","80°","140°"],1,"밑각 = (180°−40°)÷2 = 70°"],
+[0,"△ABC에서 ∠B=∠C일 때 옳은 것은?",["AB=BC","AB=AC","BC=AC","AB=BC=AC"],1,"두 내각이 같으면 그 대변이 같아 AB=AC인 이등변삼각형입니다."],
+[0,"AB=AC, ∠B=50°일 때 꼭지각 ∠A는?",["50°","65°","80°","100°"],2,"∠C=50°이므로 ∠A=180°−100°=80°"],
+[0,"이등변삼각형 ABC(AB=AC)에서 꼭지각의 이등분선 AD에 대해 옳은 것은?",["AD는 BC를 수직이등분","AD=BC","∠B=90°","AD=AB"],0,"꼭지각의 이등분선은 밑변을 수직이등분합니다."],
+[0,"AB=AC, BC=8일 때 꼭지각의 이등분선이 밑변과 만나는 점 D에 대해 BD의 길이는?",["2","4","6","8"],1,"BD=CD=BC÷2=4"],
+[1,"빗변의 길이와 다른 한 변의 길이가 각각 같은 두 직각삼각형의 합동 조건은?",["RHA","RHS","SAS","ASA"],1,"빗변(H)+한 변(S) → RHS 합동"],
+[1,"빗변의 길이와 한 예각의 크기가 각각 같은 두 직각삼각형의 합동 조건은?",["RHA","RHS","SSS","AAA"],0,"빗변(H)+예각(A) → RHA 합동"],
+[1,"직각삼각형의 합동 조건이 될 수 없는 것은?",["빗변+한 변","빗변+한 예각","두 예각","두 변+끼인각(직각)"],2,"두 예각만 같으면 크기가 달라질 수 있어 닮음일 뿐 합동이 아닙니다."],
+[1,"∠A=∠D=90°, BC=EF, ∠B=∠E인 △ABC와 △DEF의 합동 조건은?",["RHS","RHA","SAS","SSS"],1,"빗변 BC=EF, 예각 ∠B=∠E → RHA"],
+[1,"각의 이등분선 위의 점 P에서 두 변에 내린 수선의 발까지의 거리가 같음을 증명할 때 쓰는 합동 조건은?",["RHA","SSS","SAS","AAA"],0,"빗변 OP 공통, ∠POA=∠POB → RHA 합동"],
+[2,"삼각형의 외심은 어떤 선의 교점인가?",["세 변의 수직이등분선","세 내각의 이등분선","세 중선","세 높이"],0,"외심은 세 변의 수직이등분선의 교점입니다."],
+[2,"직각삼각형의 외심은 어디에 있는가?",["꼭짓점","빗변의 중점","삼각형 외부","무게중심"],1,"직각삼각형의 외심은 빗변의 중점입니다."],
+[2,"O가 △ABC의 외심이고 ∠A=50°일 때 ∠BOC는?",["50°","80°","100°","130°"],2,"중심각은 원주각의 2배 → 100°"],
+[2,"삼각형의 내심에 대한 설명으로 옳은 것은?",["세 꼭짓점에서 같은 거리","세 변에서 같은 거리","항상 외부에 있음","세 변의 중점"],1,"내심은 세 변까지의 거리가 같습니다."],
+[2,"I가 △ABC의 내심이고 ∠A=60°일 때 ∠BIC는?",["90°","110°","120°","150°"],2,"∠BIC=90°+½×60°=120°"],
+[2,"세 변이 3, 4, 5인 직각삼각형의 내접원의 반지름은?",["1","1.5","2","2.5"],0,"r=(3+4−5)÷2=1"],
+[2,"빗변이 10인 직각삼각형의 외접원의 반지름은?",["3","5","10","20"],1,"외심은 빗변의 중점 → R=10÷2=5"],
+[3,"평행사변형의 성질이 <b>아닌</b> 것은?",["대변의 길이가 같다","대각의 크기가 같다","대각선이 서로 이등분","대각선의 길이가 같다"],3,"대각선의 길이가 같은 것은 직사각형의 성질입니다."],
+[3,"한 쌍의 대변이 평행하고 그 길이가 같은 사각형은?",["사다리꼴","평행사변형","등변사다리꼴","알 수 없다"],1,"평행사변형이 되는 조건 중 하나입니다."],
+[3,"평행사변형 ABCD에서 ∠A=70°일 때 ∠B는?",["70°","90°","110°","120°"],2,"이웃한 두 각의 합은 180° → 110°"],
+[3,"두 대각선의 길이가 같은 평행사변형은?",["마름모","직사각형","등변사다리꼴","없다"],1,"평행사변형+대각선 길이 같음 → 직사각형"],
+[3,"두 대각선이 서로 수직인 평행사변형은?",["직사각형","마름모","정사각형","사다리꼴"],1,"평행사변형+대각선 수직 → 마름모"],
+[3,"정사각형의 성질로 옳은 것은?",["대각선 길이가 같고 서로 수직이등분","대각선이 수직이지만 길이는 다름","네 각만 같다","대각선이 이등분하지 않음"],0,"직사각형과 마름모의 성질을 모두 가집니다."],
+[3,"등변사다리꼴의 성질은?",["두 대각선의 길이가 같다","두 대각선이 수직","두 쌍의 대변이 평행","네 변이 같다"],0,"등변사다리꼴은 대각선의 길이가 같습니다."],
+[3,"대각선이 서로 다른 것을 수직이등분하고 길이도 같은 사각형은?",["직사각형","마름모","정사각형","평행사변형"],2,"수직이등분+길이 같음 → 정사각형"]];
+
+const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const sh=(a,r)=>a.map(v=>[r(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);
+const SV=b=>`<svg viewBox="0 0 230 140" width="230">${b}</svg>`,T=(x,y,t)=>`<text x="${x}" y="${y}">${t}</text>`;
+const FG={
+iso:l=>SV(`<polygon points="115,15 35,115 195,115" fill="none" stroke-width="2"/>${T(111,10,'A')+T(20,126,'B')+T(197,126,'C')+T(2,16,l)}`),
+circ:l=>SV(`<circle class="a" cx="110" cy="75" r="60" fill="none" stroke-width="1.5"/><polygon points="110,15 58,105 156,114" fill="none" stroke-width="2"/><path d="M110,75L58,105M110,75L156,114" stroke-dasharray="4" fill="none"/><circle cx="110" cy="75" r="2.5"/>${T(106,10,'A')+T(44,114,'B')+T(160,124,'C')+T(116,72,'O')+T(2,16,l)}`),
+inc:l=>SV(`<polygon points="110,15 30,115 200,115" fill="none" stroke-width="2"/><circle class="a" cx="112" cy="76" r="39" fill="none" stroke-width="1.5"/><path d="M112,76L110,15M112,76L30,115M112,76L200,115" stroke-dasharray="4" fill="none"/><circle cx="112" cy="76" r="2.5"/>${T(106,10,'A')+T(14,126,'B')+T(202,126,'C')+T(118,72,'I')+T(2,16,l)}`),
+pgm:l=>SV(`<polygon points="60,30 210,30 170,110 20,110" fill="none" stroke-width="2"/>${T(50,24,'A')+T(212,24,'B')+T(172,124,'C')+T(8,124,'D')+T(2,12,l)}`),
+trap:l=>SV(`<polygon points="80,25 150,25 190,110 40,110" fill="none" stroke-width="2"/>${T(68,20,'A')+T(152,20,'D')+T(26,124,'B')+T(192,124,'C')+T(2,12,l)}`)};
+const mk=(u,l,q,a,un,e,g,r)=>{const c=[a+1,a+2,a-1,a+10,a-10,a*2,a+5,a-5,a/2].filter((x,i,A)=>x>0&&x*2%1==0&&x!=a&&A.indexOf(x)==i);const o=sh([a,...sh(c,r).slice(0,3)],r);return[u,q,o.map(x=>x+un),o.indexOf(a),e,g,l]};
+Q.forEach(q=>{q[6]=0});
+const G=(u,l,vs,f)=>vs.forEach((v,k)=>Q.push(f(v,rng(Q.length*7+k+1),u,l)));
+G(0,0,[40,50,70,80,100,20],(x,r,u,l)=>mk(u,l,`AB=AC인 이등변삼각형 ABC에서 ∠A=${x}°일 때 ∠B의 크기는?`,(180-x)/2,'°',`밑각 = (180°−${x}°)÷2`,FG.iso(`∠A=${x}°`),r));
+G(0,0,[36,44,52,64],(x,r,u,l)=>mk(u,l,`AB=AC인 이등변삼각형에서 ∠B=${x}°일 때 꼭지각 ∠A는?`,180-2*x,'°',`∠C=∠B=${x}° → ∠A=180°−2×${x}°`,0,r));
+G(0,0,[6,10,14,18],(x,r,u,l)=>mk(u,l,`AB=AC인 이등변삼각형 ABC에서 꼭지각의 이등분선이 BC와 만나는 점을 D라 하자. BC=${x}cm일 때 BD의 길이는?`,x/2,'cm','꼭지각의 이등분선은 밑변을 수직이등분',0,r));
+G(2,0,[40,50,60,70,35,55],(x,r,u,l)=>mk(u,l,`O가 △ABC의 외심이고 ∠A=${x}°일 때 ∠BOC의 크기는?`,2*x,'°','중심각 = 2×원주각',FG.circ(`∠A=${x}°`),r));
+G(2,0,[10,14,18,26],(x,r,u,l)=>mk(u,l,`빗변의 길이가 ${x}cm인 직각삼각형의 외접원의 반지름은?`,x/2,'cm','외심은 빗변의 중점 → R=빗변÷2',0,r));
+G(2,0,[40,50,60,80,70,100],(x,r,u,l)=>mk(u,l,`I가 △ABC의 내심이고 ∠A=${x}°일 때 ∠BIC의 크기는?`,90+x/2,'°',`∠BIC=90°+½∠A`,FG.inc(`∠A=${x}°`),r));
+G(2,0,[[3,4,5],[5,12,13],[6,8,10],[8,15,17]],([a,b,c],r,u,l)=>mk(u,l,`∠C=90°, BC=${a}cm, CA=${b}cm, AB=${c}cm인 직각삼각형의 내접원의 반지름은?`,(a+b-c)/2,'cm','r=(a+b−c)÷2',0,r));
+G(3,0,[50,60,70,80,110],(x,r,u,l)=>mk(u,l,`평행사변형 ABCD에서 ∠A=${x}°일 때 ∠B의 크기는?`,180-x,'°','이웃한 두 각의 합 = 180°',FG.pgm(`∠A=${x}°`),r));
+G(3,0,[12,16,20,9,7],(x,r,u,l)=>mk(u,l,`평행사변형 ABCD의 두 대각선의 교점을 O라 하자. AC=${x}cm일 때 AO의 길이는?`,x/2,'cm','대각선은 서로 다른 것을 이등분',0,r));
+G(3,0,[[3,5],[4,7],[6,9],[5,8]],([a,b],r,u,l)=>mk(u,l,`평행사변형 ABCD에서 AB=${a}cm, BC=${b}cm일 때 둘레의 길이는?`,2*(a+b),'cm','대변의 길이가 같으므로 2×(a+b)',0,r));
+G(3,0,[3,5,7,9],(x,r,u,l)=>mk(u,l,`한 변의 길이가 ${x}cm인 마름모의 둘레의 길이는?`,4*x,'cm','네 변의 길이가 모두 같다',0,r));
+G(3,0,[50,60,70,65],(x,r,u,l)=>mk(u,l,`AD//BC인 등변사다리꼴 ABCD에서 ∠B=${x}°일 때 ∠A의 크기는?`,180-x,'°',`∠B=∠C이고, ∠A+∠B=180° (AD//BC)`,FG.trap(`∠B=${x}°`),r));
+[["평행사변형에서 한 내각이 직각","직사각형"],["평행사변형에서 이웃한 두 변의 길이가 같다","마름모"],["직사각형에서 이웃한 두 변의 길이가 같다","정사각형"],["마름모에서 한 내각이 직각","정사각형"],["마름모에서 두 대각선의 길이가 같다","정사각형"],["직사각형에서 두 대각선이 수직","정사각형"],["평행사변형에서 두 대각선의 길이가 같다","직사각형"],["평행사변형에서 두 대각선이 수직","마름모"]].forEach(([c,a])=>{const o=["평행사변형","직사각형","마름모","정사각형"];Q.push([3,`${c}이면 이 사각형은 어떤 사각형인가?`,o,o.indexOf(a),`${c} → ${a}`,0,0])});
+[["빗변 10cm, 다른 한 변 6cm가 각각 같은 두 직각삼각형","RHS"],["빗변 7cm, 한 예각 35°가 각각 같은 두 직각삼각형","RHA"],["빗변 13cm, 한 변 5cm가 각각 같은 두 직각삼각형","RHS"],["빗변 9cm, 한 예각 50°가 각각 같은 두 직각삼각형","RHA"]].forEach(([c,a])=>{const o=["RHS","RHA","SAS","합동이 아님"];Q.push([1,`${c}의 합동 조건은?`,o,o.indexOf(a),`빗변 + ${a=='RHS'?'한 변 → RHS':'한 예각 → RHA'}`,0,0])});
+// 상위권
+G(2,1,[30,40,50,35],(x,r,u,l)=>mk(u,1,`O가 예각삼각형 ABC의 외심이고 ∠A=${x}°일 때 ∠OBC의 크기는?`,90-x,'°',`∠BOC=${2*x}°, △OBC는 이등변삼각형 → (180°−${2*x}°)÷2`,FG.circ(`∠A=${x}°`),r));
+G(2,1,[[40,60],[50,70],[60,50],[80,40]],([x,y],r,u,l)=>mk(u,1,`I가 △ABC의 내심이고 ∠A=${x}°, ∠B=${y}°일 때 ∠ICB의 크기는?`,(180-x-y)/2,'°',`∠C=${180-x-y}°이고 CI는 ∠C의 이등분선`,FG.inc(`∠A=${x}°  ∠B=${y}°`),r));
+G(2,1,[[20,30],[25,35],[30,40],[15,45]],([a,b],r,u,l)=>mk(u,1,`O가 △ABC의 외심이고 ∠OAB=${a}°, ∠OBC=${b}°일 때 ∠OCA의 크기는?`,90-a-b,'°','OA=OB=OC로 이등변삼각형 3개 → 세 각의 합: (∠OAB+∠OBC+∠OCA)=90°',FG.circ(`∠OAB=${a}°  ∠OBC=${b}°`),r));
+G(2,1,[[3,4,5],[5,12,13],[6,8,10],[8,15,17]],([a,b,c],r,u,l)=>mk(u,1,`∠C=90°, BC=${a}cm, CA=${b}cm인 직각삼각형의 내접원의 반지름 r과 외접원의 반지름 R의 합 r+R는?`,(a+b)/2,'cm',`빗변 AB=${c}, r=(a+b−c)÷2, R=c÷2 → r+R=(a+b)÷2`,0,r));
+G(2,1,[[2,24],[3,30],[4,36],[5,40]],([a,L],r,u,l)=>mk(u,1,`둘레의 길이가 ${L}cm이고 내접원의 반지름이 ${a}cm인 삼각형의 넓이는?`,a*L/2,'cm²','S=½×r×(둘레)',0,r));
+G(3,1,[[5,8],[6,10],[4,9],[7,12]],([a,b],r,u,l)=>mk(u,1,`평행사변형 ABCD에서 AB=${a}cm, AD=${b}cm이다. ∠A의 이등분선이 BC와 만나는 점을 E라 할 때 EC의 길이는?`,b-a,'cm','AD//BC → ∠DAE=∠AEB, 따라서 △ABE는 이등변삼각형 BE=AB. EC=BC−BE',0,r));
+G(3,1,[[1,2],[2,3],[1,5],[4,5]],([m,n],r,u,l)=>mk(u,1,`평행사변형 ABCD에서 ∠A : ∠B = ${m} : ${n}일 때 ∠A의 크기는?`,180*m/(m+n),'°','∠A+∠B=180°',FG.pgm(`∠A:∠B=${m}:${n}`),r));
+G(3,1,[[6,8,5],[10,24,13],[12,16,10],[16,30,17]],([a,b,c],r,u,l)=>mk(u,1,`두 대각선의 길이가 ${a}cm, ${b}cm인 마름모의 한 변의 길이는?`,c,'cm',`대각선은 서로 수직이등분 → 직각삼각형의 두 변 ${a/2}, ${b/2}`,0,r));
+G(3,1,[4,6,8,10],(x,r,u,l)=>mk(u,1,`한 변의 길이가 ${x}cm인 정사각형 ABCD의 두 대각선의 교점을 O라 할 때 △OAB의 넓이는?`,x*x/4,'cm²','네 삼각형의 넓이가 같다 → 정사각형 넓이의 ¼',0,r));
+G(0,1,[36,20,30,40],(x,r,u,l)=>mk(u,1,`AB=AC, ∠A=${x}°인 △ABC에서 AC 위의 점 D가 BD=BC를 만족할 때 ∠ABD의 크기는?`,(180-x)/2-x,'°',`∠C=${(180-x)/2}°=∠BDC → ∠DBC=${x}°`,0,r));
+G(1,1,[25,35,50,20],(x,r,u,l)=>mk(u,1,`∠C=90°인 직각삼각형 ABC에서 M이 빗변 AB의 중점, ∠A=${x}°일 때 ∠CMB의 크기는?`,2*x,'°','M은 외심 → MA=MC, ∠ACM=∠A → 외각의 성질',0,r));
+const $=s=>document.querySelector(s);
+const ld=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let wrong=ld('wrong',[]),st=ld('stats',{c:0,t:0});
+function stat(){const p=st.t?Math.round(st.c/st.t*100):0;$('#stat').innerHTML=`<div><b>${st.t}</b><span class="sub">푼 문제</span></div><div><b>${p}%</b><span class="sub">정답률</span></div><div><b>${wrong.length}</b><span class="sub">오답 노트</span></div>`}
+// 개념
+let cu=0;
+function concept(){$('#p0').innerHTML=`<div class="chips">${U.map((u,i)=>`<button class="${i==cu?'on':''}" onclick="cu=${i};concept()">${i+1}. ${u}</button>`).join('')}</div>${C[cu]}<button class="pri" onclick="startQ('u',${cu})">이 단원 문제 풀기 →</button>`}
+// 탭
+function tab(n){[0,1].forEach(i=>{$('#t'+i).className=i==n?'on':'';$('#p'+i).className=i==n?'':'hide'});if(n==1)menu()}
+$('#t0').onclick=()=>tab(0);$('#t1').onclick=()=>tab(1);
+// 문제
+let L=[],ix=0,sc=0;
+function menu(){$('#p1').innerHTML=`<div class="card"><h2>단원별</h2><div class="chips">${U.map((u,i)=>`<button onclick="startQ('u',${i})">${i+1}. ${u} (${Q.filter(q=>q[0]==i).length})</button>`).join('')}</div></div>
+<div class="card"><h2>랜덤 · 그림 · 상위권</h2><div class="chips"><button class="pri" onclick="startQ('r')">🎲 랜덤 10문제</button><button onclick="startQ('f')">🖼️ 그림 문제 10 (${Q.filter(q=>q[5]).length})</button><button onclick="startQ('h')">🔥 상위권 10 (${Q.filter(q=>q[6]).length})</button></div></div>
+<div class="card"><h2>오답 학습 (${wrong.length}문제)</h2><p class="sub">틀린 문제는 브라우저에 저장되고, 다시 맞히면 노트에서 사라집니다.</p><button class="pri" onclick="startQ('w')" ${wrong.length?'':'disabled'}>📕 오답 풀기</button> <button onclick="if(confirm('오답 노트와 기록을 모두 지울까요?')){wrong=[];st={c:0,t:0};sv('wrong',wrong);sv('stats',st);stat();menu()}">초기화</button></div>`}
+function startQ(m,u){tab(1);let a=Q.map((q,i)=>i);if(m=='u')a=a.filter(i=>Q[i][0]==u);if(m=='w')a=wrong.slice();if(m=='h')a=a.filter(i=>Q[i][6]);if(m=='f')a=a.filter(i=>Q[i][5]);if(m=='r'||m=='h'||m=='f')a=a.sort(()=>Math.random()-.5).slice(0,10);if(m=='u')a.sort(()=>Math.random()-.5);L=a;ix=0;sc=0;show()}
+function show(){if(ix>=L.length){$('#p1').innerHTML=`<div class="card"><h2>🎉 완료!</h2><p>${L.length}문제 중 <b>${sc}</b>문제 정답</p><button class="pri" onclick="menu()">처음으로</button></div>`;return}
+const q=Q[L[ix]];$('#p1').innerHTML=`<div class="card"><div class="bar"><i style="width:${ix/L.length*100}%"></i></div><p class="sub">${ix+1} / ${L.length} · ${U[q[0]]} ${q[6]?'· 🔥 상위권':''}</p><h2>${q[1]}</h2>${q[5]||''}${q[2].map((o,i)=>`<button class="opt" onclick="pick(${i})">${'①②③④'[i]} ${o}</button>`).join('')}<div id="fb"></div></div>`}
+function pick(i){const id=L[ix],q=Q[id],ok=i==q[3];document.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true;if(j==q[3])b.classList.add('ok');else if(j==i)b.classList.add('no')});
+st.t++;if(ok){st.c++;sc++;wrong=wrong.filter(x=>x!=id)}else if(!wrong.includes(id))wrong.push(id);sv('stats',st);sv('wrong',wrong);stat();
+$('#fb').innerHTML=`<div class="box"><b>${ok?'✅ 정답!':'❌ 오답'}</b><br>${q[4]}</div><button class="pri" onclick="ix++;show()">${ix+1<L.length?'다음 →':'결과 보기'}</button>`}
+stat();concept();
+</script></body></html>
